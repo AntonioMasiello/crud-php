@@ -18,8 +18,12 @@
       // Check connection
       if (!$connessione) { die("Errore connessione");	}
       
-      $istruzioneSQL = "SELECT id, titolo FROM eventi";
-      $tuple = mysqli_query($connessione,$istruzioneSQL);
+    
+      $istruzioneSQL = mysqli_prepare($connessione,"SELECT (id, titolo ) FROM eventi(?,?)");
+	
+     	// Esecuzione della query
+    	mysqli_stmt_bind_param($istruzioneSQL, "is",$id,$titolo);
+     	mysqli_stmt_execute($istruzioneSQL);
       
       if (mysqli_num_rows($tuple) > 0) 
       {
